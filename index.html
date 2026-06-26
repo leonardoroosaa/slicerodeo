@@ -536,8 +536,8 @@
           </svg>
         </div>
         <div class="hero-mascot-wrap">
-          <!-- SUBSTITUA: /images/mascot-hero.png pelo mascote em pose heroica -->
-          <img src="/images/mascot-hero.png" alt="Mascote Slice Rodeo" onerror="this.style.display='none'">
+          <!-- SUBSTITUA: images/mascot-hero.png pelo mascote em pose heroica -->
+          <img src="images/mascot-hero.png" alt="Mascote Slice Rodeo" onerror="this.style.display='none'">
         </div>
       </div>
     </div>
@@ -578,11 +578,11 @@
         <p style="margin-top:12px">Hoje o <strong>Slice Rodeo</strong> é point do bairro, com <strong>paredes de madeira rústica</strong>, uma <strong>jukebox que só toca vinil</strong> e um cheiro de <strong>alho e orégano</strong> que até o xerife vem conferir. Cada pizza é <strong>aberta na mão</strong>, cada ingrediente é <strong>escolhido a dedo</strong>.</p>
       </div>
       <div class="split-visual reveal-right">
-        <!-- SUBSTITUA: /images/mascot-about.png ou uma imagem do restaurante -->
+        <!-- SUBSTITUA: images/mascot-about.png ou uma imagem do restaurante -->
         <div class="placeholder-bg">
           <span>SLICE<br>RODEO</span>
         </div>
-        <img src="/images/mascot-about.png" alt="" onerror="this.style.display='none'">
+        <img src="images/mascot-about.png" alt="" onerror="this.style.display='none'">
       </div>
     </div>
   </section>
@@ -664,9 +664,9 @@
         <span>Feito com massa, amor e muito molho 🍕🤠</span>
       </div>
     </div>
-    <!-- SUBSTITUA: /images/mascot-footer.png -->
+    <!-- SUBSTITUA: images/mascot-footer.png -->
     <div class="footer-mascot">
-      <img src="/images/mascot-footer.png" alt="" onerror="this.style.display='none'">
+      <img src="images/mascot-footer.png" alt="" onerror="this.style.display='none'">
     </div>
   </footer>
 
@@ -679,8 +679,8 @@
     </div>
     <div class="cart-items" id="cartItems">
       <div class="cart-empty" id="cartEmpty">
-        <!-- SUBSTITUA: /images/mascot-cart.png -->
-        <img src="/images/mascot-cart.png" alt="" onerror="this.style.display='none'">
+        <!-- SUBSTITUA: images/mascot-cart.png -->
+        <img src="images/mascot-cart.png" alt="" onerror="this.style.display='none'">
         <p>Carrinho vazio...<br>Hora de pedir uma pizza! 🍕</p>
       </div>
     </div>
@@ -736,12 +736,12 @@
     // DATA
     // ================================================================
     const PIZZAS = [
-      { id:1, name:'Texas BBQ',        ingredients:'Mussarela, carne de sol desfiada, cebola roxa, barbecue, coentro',        price:49.90, img:'/images/pizza-1.png' },
-      { id:2, name:'Country Pepperoni', ingredients:'Mussarela, pepperoni artesanal, pimenta calabresa, melado de cana',      price:44.90, img:'/images/pizza-2.png' },
-      { id:3, name:'Rodeo Margherita',  ingredients:'Mussarela de búfala, tomate italiano, manjericão, azeite trufado',      price:42.90, img:'/images/pizza-3.png' },
-      { id:4, name:'Cowboy Supreme',    ingredients:'Mussarela, linguiça artesanal, pimentão, champignon, azeitona preta',   price:52.90, img:'/images/pizza-4.png' },
-      { id:5, name:'Sertaneja',         ingredients:'Mussarela, queijo coalho grelhado, goiabada cascão, rúcula',           price:47.90, img:'/images/pizza-5.png' },
-      { id:6, name:'Chapéu de Palha',   ingredients:'Mussarela, frango ao molho pardo, milho verde, catupiry, bacon',        price:49.90, img:'/images/pizza-6.png' },
+      { id:1, name:'Texas BBQ',        ingredients:'Mussarela, carne de sol desfiada, cebola roxa, barbecue, coentro',        price:49.90, img:'images/pizza-1.png' },
+      { id:2, name:'Country Pepperoni', ingredients:'Mussarela, pepperoni artesanal, pimenta calabresa, melado de cana',      price:44.90, img:'images/pizza-2.png' },
+      { id:3, name:'Rodeo Margherita',  ingredients:'Mussarela de búfala, tomate italiano, manjericão, azeite trufado',      price:42.90, img:'images/pizza-3.png' },
+      { id:4, name:'Cowboy Supreme',    ingredients:'Mussarela, linguiça artesanal, pimentão, champignon, azeitona preta',   price:52.90, img:'images/pizza-4.png' },
+      { id:5, name:'Sertaneja',         ingredients:'Mussarela, queijo coalho grelhado, goiabada cascão, rúcula',           price:47.90, img:'images/pizza-5.png' },
+      { id:6, name:'Chapéu de Palha',   ingredients:'Mussarela, frango ao molho pardo, milho verde, catupiry, bacon',        price:49.90, img:'images/pizza-6.png' },
     ];
 
     let cart = [];
@@ -829,7 +829,7 @@
       cartCount.textContent = totalItems;
 
       if (cart.length === 0) {
-        cartItems.innerHTML = `<div class="cart-empty"><img src="/images/mascot-cart.png" alt="" onerror="this.style.display='none'"><p>Carrinho vazio...<br>Hora de pedir uma pizza! 🍕</p></div>`;
+        cartItems.innerHTML = `<div class="cart-empty"><img src="images/mascot-cart.png" alt="" onerror="this.style.display='none'"><p>Carrinho vazio...<br>Hora de pedir uma pizza! 🍕</p></div>`;
         cartFooter.style.display = 'none';
         return;
       }
