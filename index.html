@@ -256,47 +256,61 @@
       margin-top:8px;text-transform:uppercase;letter-spacing:3px;
     }
     .pizza-track{
-      display:flex;gap:40px;overflow-x:auto;padding:20px 0 40px;
+      display:flex;gap:40px;overflow-x:auto;
+      padding:20px calc(50vw - 160px) 40px;
       scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
     }
     .pizza-track::-webkit-scrollbar{display:none}
-    .pizza-track::before,
-    .pizza-track::after{
-      content:'';flex:0 0 calc(50vw - 50%);pointer-events:none;
-    }
     .pizza-card{
       flex:0 0 320px;scroll-snap-align:center;
       text-align:center;padding:40px 24px 32px;
-      background:rgba(255,255,255,.04);
-      border-radius:28px;border:1px solid rgba(255,255,255,.06);
+      background:rgba(255,255,255,.03);
+      border-radius:28px;border:1px solid rgba(255,255,255,.05);
       backdrop-filter:blur(2px);
-      transform:scale(.82);
-      transition:all .5s cubic-bezier(.22,1,.36,1);
+      transform:scale(.78);
+      transition:all .6s cubic-bezier(.22,1,.36,1);
       display:flex;flex-direction:column;align-items:center;
+      position:relative;
+      opacity:.5;
+    }
+    .pizza-card::before{
+      content:'';position:absolute;inset:-2px;
+      border-radius:30px;
+      background:linear-gradient(135deg,var(--brand),var(--pink),var(--blue));
+      opacity:0;transition:opacity .6s;
+      z-index:-1;
     }
     .pizza-card.is-active{
-      transform:scale(1);
-      background:rgba(255,255,255,.07);
-      border-color:rgba(255,255,255,.12);
+      transform:scale(1.08);
+      background:rgba(255,255,255,.1);
+      border-color:transparent;
+      opacity:1;
+      box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px rgba(238,187,46,.15);
     }
+    .pizza-card.is-active::before{opacity:.4}
     .pizza-card .img-wrap{
       width:200px;height:200px;margin:0 auto 20px;
-      transition:transform .5s cubic-bezier(.22,1,.36,1);
+      transition:transform .6s cubic-bezier(.22,1,.36,1);
+      position:relative;
     }
-    .pizza-card.is-active .img-wrap{transform:scale(1.06) rotate(-3deg)}
+    .pizza-card.is-active .img-wrap{
+      transform:scale(1.12) rotate(-4deg);
+      filter:drop-shadow(0 16px 40px rgba(0,0,0,.35));
+    }
     .pizza-card img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.25))}
     .pizza-card h3{
       font-family:var(--font-display);font-size:1.5rem;color:#fff;
       margin-bottom:4px;letter-spacing:1px;
+      text-shadow:0 2px 10px rgba(0,0,0,.3);
     }
     .pizza-card .ingredients{
       font-size:.8rem;color:rgba(255,255,255,.4);margin-bottom:16px;
       max-width:240px;line-height:1.5;
     }
     .pizza-card .price{
-      font-weight:700;font-size:1.2rem;color:var(--brand);margin-bottom:16px;
+      font-weight:700;font-size:1.3rem;color:var(--brand);margin-bottom:16px;
     }
     .pizza-card .add-btn{
       background:var(--brand);color:var(--bg-dark);font-weight:700;font-size:.75rem;
@@ -304,7 +318,7 @@
       border-radius:50px;transition:all .3s;width:fit-content;opacity:0;transform:translateY(10px);
     }
     .pizza-card.is-active .add-btn{
-      opacity:1;transform:translateY(0);transition-delay:.2s;
+      opacity:1;transform:translateY(0);transition-delay:.25s;
     }
     .pizza-card .add-btn:hover{
       background:var(--red);color:#fff;transform:scale(1.05);box-shadow:0 4px 20px rgba(203,52,47,.3);
@@ -812,13 +826,16 @@
     const headerNav = $('#headerNav');
 
     // ================================================================
-    // MENU RENDER (Paput-style slider)
+    // MENU RENDER (infinite horizontal loop — Paput-style)
     // ================================================================
     const pizzaTrack = document.getElementById('pizzaTrack');
+    let loopLock = false;
 
     function renderMenu() {
-      pizzaTrack.innerHTML = PIZZAS.map(p => `
-        <div class="pizza-card">
+      // Render 3 copies for infinite loop illusion
+      const items = [...PIZZAS, ...PIZZAS, ...PIZZAS];
+      pizzaTrack.innerHTML = items.map(p => `
+        <div class="pizza-card" data-id="${p.id}">
           <div class="img-wrap">
             <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
           </div>
@@ -829,21 +846,28 @@
         </div>
       `).join('');
 
+      const cardW = 320 + 40; // card width + gap
+      const cards = pizzaTrack.querySelectorAll('.pizza-card');
+      const totalCards = PIZZAS.length; // real unique items
+
+      // Start at the beginning of the 2nd set
+      pizzaTrack.scrollLeft = cardW * totalCards;
+
       // Add to cart handlers
-      pizzaTrack.querySelectorAll('.add-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          addToCart(parseInt(btn.dataset.id));
-          btn.textContent = '✓';
-          btn.style.background = '#fff';
-          btn.style.color = 'var(--bg-dark)';
-          setTimeout(() => { btn.textContent = 'Adicionar'; btn.style.background = ''; btn.style.color = ''; }, 1200);
+      cards.forEach(btn => {
+        btn.querySelector('.add-btn').addEventListener('click', (e) => {
+          const id = parseInt(e.target.dataset.id);
+          addToCart(id);
+          e.target.textContent = '✓';
+          e.target.style.background = '#fff';
+          e.target.style.color = 'var(--bg-dark)';
+          setTimeout(() => { e.target.textContent = 'Adicionar'; e.target.style.background = ''; e.target.style.color = ''; }, 1200);
         });
       });
 
-      // Active card detection (like Paput)
+      // Active card detection
       function updateActiveCard() {
         const center = window.innerWidth / 2;
-        const cards = pizzaTrack.querySelectorAll('.pizza-card');
         cards.forEach(card => {
           const box = card.getBoundingClientRect();
           const cardCenter = box.left + box.width / 2;
@@ -851,9 +875,33 @@
         });
       }
 
-      pizzaTrack.addEventListener('scroll', () => requestAnimationFrame(updateActiveCard));
+      // Infinite loop jump
+      function checkLoop() {
+        if (loopLock) return;
+        const maxScroll = cardW * totalCards * 2;
+        const minScroll = 0;
+        const scroll = pizzaTrack.scrollLeft;
+        const threshold = cardW;
+
+        if (scroll >= maxScroll - threshold) {
+          loopLock = true;
+          pizzaTrack.style.scrollBehavior = 'auto';
+          pizzaTrack.scrollLeft = scroll - cardW * totalCards;
+          requestAnimationFrame(() => { pizzaTrack.style.scrollBehavior = ''; loopLock = false; });
+        } else if (scroll <= minScroll + threshold) {
+          loopLock = true;
+          pizzaTrack.style.scrollBehavior = 'auto';
+          pizzaTrack.scrollLeft = scroll + cardW * totalCards;
+          requestAnimationFrame(() => { pizzaTrack.style.scrollBehavior = ''; loopLock = false; });
+        }
+      }
+
+      pizzaTrack.addEventListener('scroll', () => {
+        requestAnimationFrame(updateActiveCard);
+        requestAnimationFrame(checkLoop);
+      });
       window.addEventListener('resize', updateActiveCard);
-      window.addEventListener('load', () => setTimeout(updateActiveCard, 200));
+      window.addEventListener('load', () => setTimeout(updateActiveCard, 400));
     }
 
     // Menu CTA button opens cart
