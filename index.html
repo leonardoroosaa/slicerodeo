@@ -238,47 +238,81 @@
     .about-section{background:var(--cream)}
     .about-section .split-text h2{color:var(--brand)}
 
-    /* ===== MENU SECTION ===== */
-    .menu-section{background:var(--brand);overflow:hidden}
-    .menu-section .section-header{text-align:center;margin-bottom:60px}
-    .menu-section .section-header h2{
+    /* ===== MENU SECTION (Paput-style slider) ===== */
+    .menu-section{
+      background:var(--bg-dark);overflow:hidden;padding-top:60px;
+      position:relative;
+    }
+    .menu-title-wrap{
+      text-align:center;padding:0 28px 40px;
+    }
+    .menu-title-wrap .menu-label{
       font-family:var(--font-display);
-      font-size:clamp(2.2rem,5vw,4rem);color:#fff;
+      font-size:clamp(2rem,6vw,5rem);color:var(--brand);
+      line-height:1;letter-spacing:2px;
     }
-    .menu-section .section-header p{color:rgba(255,255,255,.6);font-size:1.05rem;margin-top:12px}
-    .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
+    .menu-title-wrap .menu-sub{
+      font-size:.85rem;color:rgba(255,255,255,.35);
+      margin-top:8px;text-transform:uppercase;letter-spacing:3px;
+    }
+    .pizza-track{
+      display:flex;gap:40px;overflow-x:auto;padding:20px 0 40px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .pizza-track::-webkit-scrollbar{display:none}
+    .pizza-track::before,
+    .pizza-track::after{
+      content:'';flex:0 0 calc(50vw - 50%);pointer-events:none;
+    }
     .pizza-card{
-      background:rgba(255,255,255,.06);border-radius:20px;padding:32px 20px 24px;
-      text-align:center;backdrop-filter:blur(4px);
-      border:1px solid rgba(255,255,255,.08);
-      transition:all .5s cubic-bezier(.22,1,.36,1);cursor:default;
-      display:flex;flex-direction:column;
+      flex:0 0 320px;scroll-snap-align:center;
+      text-align:center;padding:40px 24px 32px;
+      background:rgba(255,255,255,.04);
+      border-radius:28px;border:1px solid rgba(255,255,255,.06);
+      backdrop-filter:blur(2px);
+      transform:scale(.82);
+      transition:all .5s cubic-bezier(.22,1,.36,1);
+      display:flex;flex-direction:column;align-items:center;
     }
-    .pizza-card:hover{
-      background:rgba(255,255,255,.1);transform:translateY(-8px);
-      border-color:rgba(255,255,255,.15);box-shadow:0 20px 50px rgba(0,0,0,.2);
+    .pizza-card.is-active{
+      transform:scale(1);
+      background:rgba(255,255,255,.07);
+      border-color:rgba(255,255,255,.12);
     }
     .pizza-card .img-wrap{
-      width:160px;height:160px;margin:0 auto 16px;position:relative;
+      width:200px;height:200px;margin:0 auto 20px;
       transition:transform .5s cubic-bezier(.22,1,.36,1);
     }
-    .pizza-card:hover .img-wrap{transform:scale(1.08) rotate(-4deg)}
-    .pizza-card img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(0,0,0,.2))}
+    .pizza-card.is-active .img-wrap{transform:scale(1.06) rotate(-3deg)}
+    .pizza-card img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 12px 30px rgba(0,0,0,.25))}
     .pizza-card h3{
-      font-family:var(--font-display);font-size:1.2rem;color:#fff;margin-bottom:4px;letter-spacing:.5px;
+      font-family:var(--font-display);font-size:1.5rem;color:#fff;
+      margin-bottom:4px;letter-spacing:1px;
     }
     .pizza-card .ingredients{
-      font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:12px;flex:1;
+      font-size:.8rem;color:rgba(255,255,255,.4);margin-bottom:16px;
+      max-width:240px;line-height:1.5;
     }
     .pizza-card .price{
-      font-weight:700;font-size:1.3rem;color:var(--gold);margin-bottom:16px;
+      font-weight:700;font-size:1.2rem;color:var(--brand);margin-bottom:16px;
     }
     .pizza-card .add-btn{
-      background:#fff;color:var(--brand);font-weight:700;font-size:.75rem;
-      text-transform:uppercase;letter-spacing:1px;padding:10px 20px;
-      border-radius:50px;transition:all .3s;width:fit-content;margin:0 auto;
+      background:var(--brand);color:var(--bg-dark);font-weight:700;font-size:.75rem;
+      text-transform:uppercase;letter-spacing:1.5px;padding:10px 24px;
+      border-radius:50px;transition:all .3s;width:fit-content;opacity:0;transform:translateY(10px);
     }
-    .pizza-card .add-btn:hover{background:var(--red);color:#fff;transform:scale(1.05);box-shadow:0 4px 16px rgba(203,52,47,.3)}
+    .pizza-card.is-active .add-btn{
+      opacity:1;transform:translateY(0);transition-delay:.2s;
+    }
+    .pizza-card .add-btn:hover{
+      background:var(--red);color:#fff;transform:scale(1.05);box-shadow:0 4px 20px rgba(203,52,47,.3);
+    }
+    .menu-cta-wrap{
+      text-align:center;padding:20px 28px 60px;
+    }
+    .menu-cta-wrap .btn-primary:hover{background:var(--red-light)!important;transform:scale(1.04);box-shadow:0 4px 20px rgba(203,52,47,.3)}
 
     /* ===== MARQUEE SECTION (full width) ===== */
     .marquee-section{
@@ -442,7 +476,7 @@
 
     /* ===== RESPONSIVE ===== */
     @media(max-width:1024px){
-      .menu-grid{grid-template-columns:repeat(2,1fr)}
+      .pizza-card{flex:0 0 280px}
     }
     @media(max-width:768px){
       .header-nav{display:none}
@@ -457,7 +491,7 @@
       .hero-sun{width:100px;height:100px;top:-20px;right:-20px}
       .split{grid-template-columns:1fr;gap:40px}
       .split-visual{min-height:280px}
-      .menu-grid{grid-template-columns:1fr;max-width:400px}
+      .pizza-card{flex:0 0 260px}
       .footer-grid{grid-template-columns:1fr 1fr}
       .about-section .split>.split-text{order:2}
       .about-section .split>.split-visual{order:1}
@@ -557,14 +591,15 @@
     </div>
   </div>
 
-  <!-- ===== MENU ===== -->
+  <!-- ===== MENU (Paput-style slider) ===== -->
   <section class="section menu-section" id="menu">
-    <div class="section-inner">
-      <div class="section-header reveal">
-        <h2>Nosso Cardápio</h2>
-        <p>Seis sabores que são um verdadeiro rodeio de sabor. Escolha o seu.</p>
-      </div>
-      <div class="menu-grid reveal-stagger" id="menuGrid"></div>
+    <div class="menu-title-wrap reveal">
+      <div class="menu-label">NOSSAS PIZZAS</div>
+      <div class="menu-sub">🍕 deslize para explorar &nbsp;·&nbsp; 6 sabores</div>
+    </div>
+    <div class="pizza-track" id="pizzaTrack"></div>
+    <div class="menu-cta-wrap reveal">
+      <button class="btn-primary" id="menuCta" style="background:var(--red);color:#fff;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:1.5px;padding:14px 40px;border-radius:50px;transition:all .3s;border:none;cursor:pointer;">Fazer Pedido</button>
     </div>
   </section>
 
@@ -777,11 +812,13 @@
     const headerNav = $('#headerNav');
 
     // ================================================================
-    // MENU RENDER
+    // MENU RENDER (Paput-style slider)
     // ================================================================
+    const pizzaTrack = document.getElementById('pizzaTrack');
+
     function renderMenu() {
-      menuGrid.innerHTML = PIZZAS.map((p,i) => `
-        <div class="pizza-card stagger-item">
+      pizzaTrack.innerHTML = PIZZAS.map(p => `
+        <div class="pizza-card">
           <div class="img-wrap">
             <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
           </div>
@@ -791,17 +828,37 @@
           <button class="add-btn" data-id="${p.id}">Adicionar</button>
         </div>
       `).join('');
-      menuGrid.querySelectorAll('.add-btn').forEach(btn => {
+
+      // Add to cart handlers
+      pizzaTrack.querySelectorAll('.add-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           addToCart(parseInt(btn.dataset.id));
-          const orig = btn.textContent;
           btn.textContent = '✓';
-          btn.style.background = 'var(--brand)';
+          btn.style.background = '#fff';
           btn.style.color = 'var(--bg-dark)';
-          setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 1200);
+          setTimeout(() => { btn.textContent = 'Adicionar'; btn.style.background = ''; btn.style.color = ''; }, 1200);
         });
       });
+
+      // Active card detection (like Paput)
+      function updateActiveCard() {
+        const center = window.innerWidth / 2;
+        const cards = pizzaTrack.querySelectorAll('.pizza-card');
+        cards.forEach(card => {
+          const box = card.getBoundingClientRect();
+          const cardCenter = box.left + box.width / 2;
+          card.classList.toggle('is-active', Math.abs(center - cardCenter) < box.width / 2);
+        });
+      }
+
+      pizzaTrack.addEventListener('scroll', () => requestAnimationFrame(updateActiveCard));
+      window.addEventListener('resize', updateActiveCard);
+      window.addEventListener('load', () => setTimeout(updateActiveCard, 200));
     }
+
+    // Menu CTA button opens cart
+    const menuCta = document.getElementById('menuCta');
+    if (menuCta) menuCta.addEventListener('click', openCart);
 
     // ================================================================
     // CART
